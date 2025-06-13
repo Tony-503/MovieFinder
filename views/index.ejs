@@ -1,0 +1,82 @@
+
+
+<%-include('partials/header.ejs')%>
+
+
+     
+<main class="min-vh-100 py-5 bg-gradient-dark text-white">
+     <div class="container">
+       <!-- Search Section -->
+       <div class="frosted-glass p-5 rounded-4 shadow-lg">
+         <h2 class="text-center futuristic-title mb-4">🎬 Quantum Movie Finder</h2>
+         <form class="needs-validation d-flex flex-wrap gap-4" method="POST" action="/submit">
+          <div class="flex-grow-1">
+              <label for="movieTitle" class="form-label">Movie Title</label>
+              <input type="text" class="form-control rounded-pill futuristic-input" id="movieTitle" name="title" placeholder="e.g. Blade Runner 2049" required>
+          </div>
+          <div class="flex-grow-1">
+              <label for="year" class="form-label">Release Year</label>
+              <input type="number" class="form-control rounded-pill futuristic-input" id="year" name="year" placeholder="e.g. 2077">
+          </div>
+          <button class="btn btn-glow align-self-end px-4 py-2 rounded-pill" type="submit">🔍 Search</button>
+      </form>
+       </div>
+  <% if (locals.data) { %>
+     <!-- Results Section -->
+     <section id="movieResults" class="mt-5">
+          <div class="container mt-4">
+               <div class="card bg-dark text-light shadow-lg rounded-4 p-3 border-0">
+                 <div class="row g-3 align-items-center">
+                   <!-- Poster Placeholder -->
+                   <div class="col-md-4 text-center">
+                     <img src="<%= data.Poster %>" alt="Run Poster" class="img-fluid rounded-3 border border-light">
+                   </div>
+             
+                   <!-- Movie Info -->
+                   <div class="col-md-8">
+                     <h2 class="futuristic-title mb-2">🎬 <%= data.Title %></h2>
+                     <p class="mb-1"><strong>Genre:</strong> <%= data.Genre %></p>
+                     <p class="mb-1"><strong>Rated:</strong> <%= data.Rated %> &nbsp; | &nbsp; <strong>Runtime:</strong> <%= data.Runtime %></p>
+                     <p class="mb-1"><strong>Released:</strong> <%= data.Released %></p>
+                     <p class="mb-1"><strong>Language:</strong> <%= data.Language %> &nbsp; | &nbsp; <strong>Country:</strong> <%= data.Country %></p>
+                     <p class="mb-1"><strong>Director:</strong> <%= data.Director %></p>
+                     <p class="mb-1"><strong>Writers:</strong> <%= data.Writer %></p>
+                     <p class="mb-3"><strong>Cast:</strong> <%= data.Actors %></p>
+                     <p class="fst-italic text-warning">“<%= data.Plot %> ”</p>
+                     <button class="btn btn-glow mt-2">🔗 View More Details</button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+       </section>
+     </div>
+   </main>
+  <% } else { %>
+    <!-- Results Section -->
+     <section id="movieResults" class="mt-5">
+          <div class="container mt-4">
+               <div class="card bg-dark text-light shadow-lg rounded-4 p-3 border-0">
+                 <div class="row g-3 align-items-center">
+                   <!-- Poster Placeholder -->
+                   <div class="col-md-4 text-center">
+                     <img src="/image/img-no-found.jpg" alt="Run Poster" class="img-fluid rounded-3 border border-light">
+                   </div>
+             
+                   <!-- Movie Info -->
+                   <div class="col-md-8">
+                    <h1 class="text-center text-danger"><%= error || "❌ No movie data available." %></h1>
+                     </h1>
+                   </div>
+                 </div>
+               </div>
+             </div>
+       </section>
+     </div>
+   </main>
+ <% } %>
+
+   
+ 
+       
+
+<%-include('partials/footer')%>
