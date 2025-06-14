@@ -53,24 +53,27 @@
    </main>
   <% } else { %>
     <!-- Results Section -->
-     <section id="movieResults" class="mt-5">
-          <div class="container mt-4">
-               <div class="card bg-dark text-light shadow-lg rounded-4 p-3 border-0">
-                 <div class="row g-3 align-items-center">
-                   <!-- Poster Placeholder -->
-                   <div class="col-md-4 text-center">
-                     <img src="/image/img-no-found.jpg" alt="Run Poster" class="img-fluid rounded-3 border border-light">
-                   </div>
-             
-                   <!-- Movie Info -->
-                   <div class="col-md-8">
-                    <h1 class="text-center text-danger"><%= error || "❌ No movie data available." %></h1>
-                     </h1>
-                   </div>
-                 </div>
-               </div>
-             </div>
-       </section>
+    <section id="movieResults" class="mt-5">
+      <div class="container mt-4">
+        <div class="card bg-dark text-light shadow-lg rounded-4 p-4 border-0">
+          <div class="row g-4 align-items-center">
+            <!-- Placeholder Image -->
+            <div class="col-md-4 text-center">
+              <img src="/image/img-no-found.jpg" alt="No Movie Found" class="img-fluid rounded-3 border border-light shadow-sm" style="max-height: 300px;">
+            </div>
+    
+            <!-- Informative Message -->
+            <div class="col-md-8 text-center">
+              <h2 class="text-warning mb-3">😕 No Movie Found</h2>
+              <p class="lead text-light">
+                <%= error || "We couldn't find any movie matching your search. Please double-check the title spelling or try a different one." %>
+              </p>
+              <a href="/" class="btn btn-warning mt-2">🔄 Try Again</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
      </div>
    </main>
  <% } %>
