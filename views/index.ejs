@@ -21,63 +21,69 @@
           <button class="btn btn-glow align-self-end px-4 py-2 rounded-pill" type="submit">🔍 Search</button>
       </form>
        </div>
-  <% if (locals.data) { %>
-     <!-- Results Section -->
-     <section id="movieResults" class="mt-5">
+       <% if (data) { %>
+        <!-- ✅ Movie Found -->
+        <section id="movieResults" class="mt-5">
           <div class="container mt-4">
-               <div class="card bg-dark text-light shadow-lg rounded-4 p-3 border-0">
-                 <div class="row g-3 align-items-center">
-                   <!-- Poster Placeholder -->
-                   <div class="col-md-4 text-center">
-                     <img src="<%= data.Poster %>" alt="Run Poster" class="img-fluid rounded-3 border border-light">
-                   </div>
-             
-                   <!-- Movie Info -->
-                   <div class="col-md-8">
-                     <h2 class="futuristic-title mb-2">🎬 <%= data.Title %></h2>
-                     <p class="mb-1"><strong>Genre:</strong> <%= data.Genre %></p>
-                     <p class="mb-1"><strong>Rated:</strong> <%= data.Rated %> &nbsp; | &nbsp; <strong>Runtime:</strong> <%= data.Runtime %></p>
-                     <p class="mb-1"><strong>Released:</strong> <%= data.Released %></p>
-                     <p class="mb-1"><strong>Language:</strong> <%= data.Language %> &nbsp; | &nbsp; <strong>Country:</strong> <%= data.Country %></p>
-                     <p class="mb-1"><strong>Director:</strong> <%= data.Director %></p>
-                     <p class="mb-1"><strong>Writers:</strong> <%= data.Writer %></p>
-                     <p class="mb-3"><strong>Cast:</strong> <%= data.Actors %></p>
-                     <p class="fst-italic text-warning">“<%= data.Plot %> ”</p>
-                     <button class="btn btn-glow mt-2">🔗 View More Details</button>
-                   </div>
-                 </div>
-               </div>
-             </div>
-       </section>
-     </div>
-   </main>
-  <% } else { %>
-    <!-- Results Section -->
-    <section id="movieResults" class="mt-5">
-      <div class="container mt-4">
-        <div class="card bg-dark text-light shadow-lg rounded-4 p-4 border-0">
-          <div class="row g-4 align-items-center">
-            <!-- Placeholder Image -->
-            <div class="col-md-4 text-center">
-              <img src="/image/img-no-found.jpg" alt="No Movie Found" class="img-fluid rounded-3 border border-light shadow-sm" style="max-height: 300px;">
-            </div>
-    
-            <!-- Informative Message -->
-            <div class="col-md-8 text-center">
-              <h2 class="text-warning mb-3">😕 No Movie Found</h2>
-              <p class="lead text-light">
-                <%= error || "We couldn't find any movie matching your search. Please double-check the title spelling or try a different one." %>
-              </p>
-              <a href="/" class="btn btn-warning mt-2">🔄 Try Again</a>
+            <div class="card bg-dark text-light shadow-lg rounded-4 p-3 border-0">
+              <div class="row g-3 align-items-center">
+                <div class="col-md-4 text-center">
+                  <img src="<%= data.Poster %>" alt="Movie Poster" class="img-fluid rounded-3 border border-light">
+                </div>
+                <div class="col-md-8">
+                  <h2 class="futuristic-title mb-2">🎬 <%= data.Title %></h2>
+                  <p class="mb-1"><strong>Genre:</strong> <%= data.Genre %></p>
+                  <p class="mb-1"><strong>Rated:</strong> <%= data.Rated %> | <strong>Runtime:</strong> <%= data.Runtime %></p>
+                  <p class="mb-1"><strong>Released:</strong> <%= data.Released %></p>
+                  <p class="mb-1"><strong>Language:</strong> <%= data.Language %> | <strong>Country:</strong> <%= data.Country %></p>
+                  <p class="mb-1"><strong>Director:</strong> <%= data.Director %></p>
+                  <p class="mb-1"><strong>Writers:</strong> <%= data.Writer %></p>
+                  <p class="mb-3"><strong>Cast:</strong> <%= data.Actors %></p>
+                  <p class="fst-italic text-warning">“<%= data.Plot %>”</p>
+                  <button class="btn btn-glow mt-2">🔗 View More Details</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-     </div>
-   </main>
- <% } %>
-
+        </section>
+      
+      <% } else if (error) { %>
+        <!-- ⚠️ No Movie Found -->
+        <section id="movieResults" class="mt-5">
+          <div class="container mt-4">
+            <div class="card bg-dark text-light shadow-lg rounded-4 p-4 border-0">
+              <div class="row g-4 align-items-center">
+                <div class="col-md-4 text-center">
+                  <img src="/image/img-no-found.jpg" alt="No Movie Found" class="img-fluid rounded-3 border border-light shadow-sm" style="max-height: 300px;">
+                </div>
+                <div class="col-md-8 text-center">
+                  <h2 class="text-danger mb-3">❌ No Results</h2>
+                  <p class="lead text-light"><%= error %></p>
+                  <a href="/" class="btn btn-outline-warning mt-2">🔄 Try a Different Movie</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      
+      <% } else { %>
+        <!-- 👋 First Visit -->
+        <section id="movieResults" class="mt-5">
+          <div class="container mt-4">
+            <div class="card bg-dark text-light shadow-lg rounded-4 p-4 border-0 text-center">
+              <div class="row">
+                <div class="col-md-12">
+                  <h2 class="text-info mb-3">🎬 Welcome to MovieSearch!</h2>
+                  <p class="lead text-light">
+                    Start by typing the name of a movie you like — we'll fetch the details for you instantly!
+                  </p>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      <% } %>
    
  
        
