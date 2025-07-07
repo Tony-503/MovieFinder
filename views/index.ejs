@@ -4,86 +4,312 @@
 
 
      
-<main class="min-vh-100 py-5 bg-gradient-dark text-white">
-     <div class="container">
-       <!-- Search Section -->
-       <div class="frosted-glass p-5 rounded-4 shadow-lg">
-         <h2 class="text-center futuristic-title mb-4">🎬 Quantum Movie Finder</h2>
-         <form class="needs-validation d-flex flex-wrap gap-4" method="POST" action="/submit">
-          <div class="flex-grow-1">
-              <label for="movieTitle" class="form-label">Movie Title</label>
-              <input type="text" class="form-control rounded-pill futuristic-input" id="movieTitle" name="title" placeholder="e.g. Blade Runner 2049" required>
-          </div>
-          <div class="flex-grow-1">
-              <label for="year" class="form-label">Release Year</label>
-              <input type="number" class="form-control rounded-pill futuristic-input" id="year" name="year" placeholder="e.g. 2077">
-          </div>
-          <button class="btn btn-glow align-self-end px-4 py-2 rounded-pill" type="submit">🔍 Search</button>
-      </form>
-       </div>
-       <% if (data) { %>
-        <!-- ✅ Movie Found -->
-        <section id="movieResults" class="mt-5">
-          <div class="container mt-4">
-            <div class="card bg-dark text-light shadow-lg rounded-4 p-3 border-0">
-              <div class="row g-3 align-items-center">
-                <div class="col-md-4 text-center">
-                  <img src="<%= data.Poster %>" alt="Movie Poster" class="img-fluid rounded-3 border border-light">
+<div class="bg-particles"></div>
+
+<main class="min-vh-100 py-5">
+    <div class="container">
+        <!-- Search Section -->
+        <div class="glass-card p-5 mb-5 fade-in">
+            <h1 class="quantum-title">
+                <i class="fas fa-film"></i> Quantum Movie Finder
+            </h1>
+            <form class="search-form d-flex flex-wrap gap-4 align-items-end" method="POST" action="/submit">
+                <div class="flex-grow-1">
+                    <label for="movieTitle" class="form-label fw-bold mb-2">
+                        <i class="fas fa-search"></i> Movie Title
+                    </label>
+                    <input type="text" class="form-control quantum-input" id="movieTitle" name="title" 
+                           placeholder="e.g. Blade Runner 2049" required 
+                           value="<%= typeof searchTitle !== 'undefined' ? searchTitle : '' %>">
                 </div>
-                <div class="col-md-8">
-                  <h2 class="futuristic-title mb-2">🎬 <%= data.Title %></h2>
-                  <p class="mb-1"><strong>Genre:</strong> <%= data.Genre %></p>
-                  <p class="mb-1"><strong>Rated:</strong> <%= data.Rated %> | <strong>Runtime:</strong> <%= data.Runtime %></p>
-                  <p class="mb-1"><strong>Released:</strong> <%= data.Released %></p>
-                  <p class="mb-1"><strong>Language:</strong> <%= data.Language %> | <strong>Country:</strong> <%= data.Country %></p>
-                  <p class="mb-1"><strong>Director:</strong> <%= data.Director %></p>
-                  <p class="mb-1"><strong>Writers:</strong> <%= data.Writer %></p>
-                  <p class="mb-3"><strong>Cast:</strong> <%= data.Actors %></p>
-                  <p class="fst-italic text-warning">“<%= data.Plot %>”</p>
-                  <button class="btn btn-glow mt-2">🔗 View More Details</button>
+                <div class="flex-grow-1">
+                    <label for="year" class="form-label fw-bold mb-2">
+                        <i class="fas fa-calendar"></i> Release Year
+                    </label>
+                    <input type="number" class="form-control quantum-input" id="year" name="year" 
+                           placeholder="e.g. 2017" min="1900" max="2030"
+                           value="<%= typeof searchYear !== 'undefined' ? searchYear : '' %>">
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      
-      <% } else if (error) { %>
-        <!-- ⚠️ No Movie Found -->
-        <section id="movieResults" class="mt-5">
-          <div class="container mt-4">
-            <div class="card bg-dark text-light shadow-lg rounded-4 p-4 border-0">
-              <div class="row g-4 align-items-center">
-                <div class="col-md-4 text-center">
-                  <img src="/image/img-no-found.jpg" alt="No Movie Found" class="img-fluid rounded-3 border border-light shadow-sm" style="max-height: 300px;">
+                <button class="quantum-btn" type="submit">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        <div class="slide-in">
+            <% if (typeof data !== 'undefined' && data) { %>
+                <!-- Movie Found -->
+                <div class="glass-card movie-card p-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-4 text-center">
+                            <img src="<%= data.Poster && data.Poster !== 'N/A' ? data.Poster : '/images/no-poster.jpg' %>" 
+                                 alt="<%= data.Title %> Poster" 
+                                 class="img-fluid movie-poster"
+                                 onerror="this.src='/images/no-poster.jpg'">
+                        </div>
+                        <div class="col-md-8">
+                            <h2 class="mb-3">
+                                <i class="fas fa-film"></i> <%= data.Title %>
+                                <% if (data.Year) { %>
+                                    <span class="text-muted">(<%= data.Year %>)</span>
+                                <% } %>
+                            </h2>
+                            
+                            <div class="movie-details mb-3">
+                                <% if (data.Genre && data.Genre !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-tags"></i> Genre:</strong> <%= data.Genre %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.Rated && data.Rated !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-certificate"></i> Rated:</strong> <%= data.Rated %>
+                                        <% if (data.Runtime && data.Runtime !== 'N/A') { %>
+                                            | <strong><i class="fas fa-clock"></i> Runtime:</strong> <%= data.Runtime %>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.Released && data.Released !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-calendar"></i> Released:</strong> <%= data.Released %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.Language && data.Language !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-language"></i> Language:</strong> <%= data.Language %>
+                                        <% if (data.Country && data.Country !== 'N/A') { %>
+                                            | <strong><i class="fas fa-flag"></i> Country:</strong> <%= data.Country %>
+                                        <% } %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.Director && data.Director !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-video"></i> Director:</strong> <%= data.Director %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.Writer && data.Writer !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-pen"></i> Writers:</strong> <%= data.Writer %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.Actors && data.Actors !== 'N/A') { %>
+                                    <div class="movie-detail-row">
+                                        <strong><i class="fas fa-users"></i> Cast:</strong> <%= data.Actors %>
+                                    </div>
+                                <% } %>
+                                
+                                <% if (data.imdbRating && data.imdbRating !== 'N/A') { %>
+                                    <div class="rating-badge">
+                                        <i class="fas fa-star"></i> IMDb: <%= data.imdbRating %>/10
+                                    </div>
+                                <% } %>
+                            </div>
+                            
+                            <% if (data.Plot && data.Plot !== 'N/A') { %>
+                                <div class="plot-text mb-3">
+                                    "<%= data.Plot %>"
+                                </div>
+                            <% } %>
+                            
+                            <div class="action-buttons">
+                                <a href="#" class="action-btn" onclick="shareMovie('<%= data.Title %>', '<%= data.Year %>')">
+                                    <i class="fas fa-share"></i> Share
+                                </a>
+                                <a href="#" class="action-btn" onclick="addToWatchlist('<%= data.Title %>')">
+                                    <i class="fas fa-bookmark"></i> Add to Watchlist
+                                </a>
+                                <% if (data.imdbID) { %>
+                                    <a href="https://www.imdb.com/title/<%= data.imdbID %>" target="_blank" class="action-btn">
+                                        <i class="fas fa-external-link-alt"></i> View on IMDb
+                                    </a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-8 text-center">
-                  <h2 class="text-danger mb-3">❌ No Results</h2>
-                  <p class="lead text-light"><%= error %></p>
-                  <a href="/" class="btn btn-outline-warning mt-2">🔄 Try a Different Movie</a>
+                
+            <% } else if (typeof error !== 'undefined' && error) { %>
+                <!-- Error Section -->
+                <div class="glass-card error-section">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2 class="text-danger mb-3">Movie Not Found</h2>
+                    <p class="lead mb-4"><%= error %></p>
+                    <div class="mb-3">
+                        <p class="text-muted">Try searching with:</p>
+                        <ul class="list-unstyled">
+                            <li>• The exact movie title</li>
+                            <li>• Different spelling variations</li>
+                            <li>• Adding or removing the release year</li>
+                            <li>• Checking for typos</li>
+                        </ul>
+                    </div>
+                    <a href="/" class="retry-btn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </a>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      
-      <% } else { %>
-        <!-- 👋 First Visit -->
-        <section id="movieResults" class="mt-5">
-          <div class="container mt-4">
-            <div class="card bg-dark text-light shadow-lg rounded-4 p-4 border-0 text-center">
-              <div class="row">
-                <div class="col-md-12">
-                  <h2 class="text-info mb-3">🎬 Welcome to MovieSearch!</h2>
-                  <p class="lead text-light">
-                    Start by typing the name of a movie you like — we'll fetch the details for you instantly!
-                  </p>
-                  
+                
+            <% } else { %>
+                <!-- Welcome Section -->
+                <div class="glass-card welcome-section">
+                    <div class="welcome-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h2 class="mb-4">Welcome to Quantum Movie Finder!</h2>
+                    <p class="lead mb-4">
+                        Discover amazing movies with our advanced search engine. 
+                        Simply enter a movie title and optionally a year to get detailed information.
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col-md-4 mb-3">
+                            <i class="fas fa-star text-warning fa-2x mb-2"></i>
+                            <h5>Detailed Info</h5>
+                            <p>Get comprehensive movie details including cast, ratings, and plot.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <i class="fas fa-bolt text-info fa-2x mb-2"></i>
+                            <h5>Instant Results</h5>
+                            <p>Lightning-fast search results powered by advanced algorithms.</p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <i class="fas fa-globe text-success fa-2x mb-2"></i>
+                            <h5>Global Database</h5>
+                            <p>Access movies from around the world with multilingual support.</p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      <% } %>
+            <% } %>
+        </div>
+    </div>
+</main>
+
+<script>
+    // Create animated background particles
+    function createParticles() {
+        const particlesContainer = document.querySelector('.bg-particles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    function shareMovie(title, year) {
+        const movieText = `Check out this amazing movie: ${title} (${year})`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Movie Recommendation',
+                text: movieText,
+                url: window.location.href
+            });
+        } else {
+            // Fallback for browsers that don't support Web Share API
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(movieText + ' - ' + window.location.href);
+                showNotification('Movie details copied to clipboard!', 'success');
+            } else {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = movieText + ' - ' + window.location.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Movie details copied to clipboard!', 'success');
+            }
+        }
+    }
+
+    function addToWatchlist(title) {
+        // Here you would typically save to a database or localStorage
+        showNotification(`"${title}" has been added to your watchlist!`, 'success');
+    }
+
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideInRight 0.3s ease;
+            backdrop-filter: blur(10px);
+        `;
+        
+        // Set background color based on type
+        if (type === 'success') {
+            notification.style.background = 'rgba(76, 175, 80, 0.9)';
+        } else if (type === 'error') {
+            notification.style.background = 'rgba(244, 67, 54, 0.9)';
+        } else {
+            notification.style.background = 'rgba(33, 150, 243, 0.9)';
+        }
+        
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+
+    // Add CSS for notification animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOutRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize particles when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        createParticles();
+        
+        // Add smooth scrolling for any anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
    
  
        
